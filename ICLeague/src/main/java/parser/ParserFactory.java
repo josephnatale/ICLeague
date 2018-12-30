@@ -10,7 +10,7 @@ public class ParserFactory {
 		}
 		
 		if(fileToProcess.endsWith("xls")) {
-			return new XlsParser();
+			return new XlsParser(fileToProcess);
 		}else {
 			throw new IllegalArgumentException("file type not supported");
 		}
