@@ -85,7 +85,7 @@ public class XlsParser implements Parser{
 	protected Map<Player,Integer> parseHomePlayerScores(HSSFSheet sheet, int startRow, int endRow) {
 		
 		Map<Player,Integer> scoreMap= new HashMap<Player, Integer>();
-		for(int i = startRow; i > endRow; i++) {
+		for(int i = startRow; i < endRow; i++) {
 			HSSFRow playerRow = sheet.getRow(i);
 			HSSFCell playerCell = playerRow.getCell(HOME_PLAYER_NAME_CELL_NUMBER);
 			String playerName = playerCell.getStringCellValue();
