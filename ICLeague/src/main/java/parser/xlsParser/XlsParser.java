@@ -36,6 +36,11 @@ public class XlsParser implements Parser{
 	private static int GAME_4_ROW_NUMBER = 37;
 	private static int GAME_5_ROW_NUMBER = 49;
 	
+	private static int HOME_PLAYER_NAME_CELL_NUMBER = 0;
+	private static int HOME_POINTS_SCORED_CELL_NUMBER = 1;
+	private static int AWAY_PLAYER_NAME_CELL_NUMBER = 4;
+	private static int AWAY_POINTS_SCORED_CELL_NUMBER = 5;
+	
 	private Integer[] gamesRows = { GAME_1_ROW_NUMBER, GAME_2_ROW_NUMBER, GAME_3_ROW_NUMBER, GAME_4_ROW_NUMBER, GAME_5_ROW_NUMBER };
 	
 	private String fileName;
@@ -55,6 +60,7 @@ public class XlsParser implements Parser{
 		this.fileName = fileName;
 	}
 	
+	@Override
 	public void init() throws FileNotFoundException, IOException {
 		fs = new POIFSFileSystem(new FileInputStream(fileName));
 		wb = new HSSFWorkbook(fs);
@@ -66,20 +72,12 @@ public class XlsParser implements Parser{
 	 */
 	@Override
 	public WeekMatchups getMatchups() {
-		HSSFSheet sheet = wb.getSheet("Week 1");
-		for(Integer i: gamesRows) {
-			HSSFRow gameRow = sheet.getRow(i.intValue());	
-			//the matchup is on the next row
-			HSSFRow matchupRow = sheet.getRow(gameRow.getRowNum() + 1);
-			
-			
-		}
 		
 		return null;
 	}
 	
 	/**
-	 * parses through sheet between start/end rows and returns a map of scoring stats for players
+	 * parses through sheet between start/end rows and returns a map of scoring stats for home team players
 	 * @param sheet
 	 * @param startRow
 	 * @param endRow
@@ -89,15 +87,14 @@ public class XlsParser implements Parser{
 		Map<Player,Integer> scoreMap= new HashMap<Player, Integer>();
 		for(int i = startRow; i > endRow; i++) {
 			HSSFRow playerRow = sheet.getRow(i);
-			//TODO: move these indexes to private static fields
-			HSSFCell playerCell = playerRow.getCell(0);
+			HSSFCell playerCell = playerRow.getCell(HOME_PLAYER_NAME_CELL_NUMBER);
 			String playerName = playerCell.getStringCellValue();
-			HSSFCell scoreCell = playerRow.getCell(1);
+			HSSFCell scoreCell = playerRow.getCell(HOME_POINTS_SCORED_CELL_NUMBER);
 			String playerScore = scoreCell.getStringCellValue();
-			//TODO: finish this implementation
+			scoreMap.put(new Player(playerName), new Integer(Integer.valueOf(playerScore)));
 		}
 		
-		return null;
+		return scoreMap;
 	}
 	
 	

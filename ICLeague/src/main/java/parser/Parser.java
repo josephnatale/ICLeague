@@ -1,5 +1,8 @@
 package parser;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import model.Matchup;
 import model.WeekMatchups;
 /**
@@ -17,6 +20,11 @@ public interface Parser {
 	 * @return
 	 */
 	public WeekMatchups getMatchups();
+	
+	/**
+	 * initializes the parser
+	 */
+	public void init() throws FileNotFoundException, IOException;
 	
 	
 }
