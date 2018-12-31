@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Matchup {
 	
-	public Matchup(Team homeTeam, Team awayTeam, Map<Player, Integer> scoringStats, Map<Player, Integer> foulStats) {
+	public Matchup(Team homeTeam, Team awayTeam, Map<Player, Double> scoringStats, Map<Player, Double> foulStats) {
 		super();
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
@@ -23,21 +23,21 @@ public class Matchup {
 	public void setAwayTeam(Team awayTeam) {
 		this.awayTeam = awayTeam;
 	}
-	public Map<Player, Integer> getScoringStats() {
+	public Map<Player, Double> getScoringStats() {
 		return scoringStats;
 	}
-	public void setScoringStats(Map<Player, Integer> scoringStats) {
+	public void setScoringStats(Map<Player, Double> scoringStats) {
 		this.scoringStats = scoringStats;
 	}
-	public Map<Player, Integer> getFoulStats() {
+	public Map<Player, Double> getFoulStats() {
 		return foulStats;
 	}
-	public void setFoulStats(Map<Player, Integer> foulStats) {
+	public void setFoulStats(Map<Player, Double> foulStats) {
 		this.foulStats = foulStats;
 	}
 	private Team homeTeam;
 	private Team awayTeam;
-	private Map<Player,Integer> scoringStats;
-	private Map<Player, Integer> foulStats;
+	private Map<Player,Double> scoringStats;
+	private Map<Player, Double> foulStats;
 
 }

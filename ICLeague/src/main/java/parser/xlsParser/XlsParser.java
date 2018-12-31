@@ -41,6 +41,11 @@ public class XlsParser implements Parser{
 	private static int AWAY_PLAYER_NAME_CELL_NUMBER = 4;
 	private static int AWAY_POINTS_SCORED_CELL_NUMBER = 5;
 	
+	enum TEAM{
+		HOME,
+		AWAY
+	}
+	
 	private Integer[] gamesRows = { GAME_1_ROW_NUMBER, GAME_2_ROW_NUMBER, GAME_3_ROW_NUMBER, GAME_4_ROW_NUMBER, GAME_5_ROW_NUMBER };
 	
 	private String fileName;
@@ -82,16 +87,38 @@ public class XlsParser implements Parser{
 	 * @param startRow
 	 * @param endRow
 	 */
-	protected Map<Player,Integer> parseHomePlayerScores(HSSFSheet sheet, int startRow, int endRow) {
+	protected Map<Player,Double> parseHomePlayerScores(XlsParser.TEAM team,HSSFSheet sheet, int startRow, int endRow) {
 		
-		Map<Player,Integer> scoreMap= new HashMap<Player, Integer>();
-		for(int i = startRow; i < endRow; i++) {
+		int playerIndex;
+		int scoreIndex;
+		if(XlsParser.TEAM.HOME.equals(team)) {
+			playerIndex = HOME_PLAYER_NAME_CELL_NUMBER;
+			scoreIndex = HOME_POINTS_SCORED_CELL_NUMBER;
+		}else if (XlsParser.TEAM.AWAY.equals(team)) {
+			playerIndex = AWAY_PLAYER_NAME_CELL_NUMBER;
+			scoreIndex = AWAY_POINTS_SCORED_CELL_NUMBER;
+		}else {
+			throw new IllegalArgumentException("valid TEAM not supplied");
+		}
+		
+		Map<Player,Double> scoreMap= new HashMap<Player, Double>();
+		for(int i = startRow; i <= endRow; i++) {
 			HSSFRow playerRow = sheet.getRow(i);
-			HSSFCell playerCell = playerRow.getCell(HOME_PLAYER_NAME_CELL_NUMBER);
+			HSSFCell playerCell = playerRow.getCell(playerIndex);
 			String playerName = playerCell.getStringCellValue();
-			HSSFCell scoreCell = playerRow.getCell(HOME_POINTS_SCORED_CELL_NUMBER);
-			String playerScore = scoreCell.getStringCellValue();
-			scoreMap.put(new Player(playerName), new Integer(Integer.valueOf(playerScore)));
+			if(playerName == null) {
+				continue;
+			}
+			HSSFCell scoreCell = playerRow.getCell(scoreIndex);
+			int cellType = scoreCell.getCellType();
+			if(cellType == HSSFCell.CELL_TYPE_NUMERIC) {
+				double playerScoreDouble = scoreCell.getNumericCellValue();
+				scoreMap.put(new Player(playerName), new Double(playerScoreDouble));
+			}else if(cellType == HSSFCell.CELL_TYPE_STRING) {
+				//john uses an 'x' to represent when a player didn't play, i'll use a -1
+				scoreMap.put(new Player(playerName), new Double(-1));
+			}
+			
 		}
 		
 		return scoreMap;

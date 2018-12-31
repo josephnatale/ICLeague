@@ -37,7 +37,7 @@ public class XlsParserTest {
 	}
 	
 	@Test
-	public void returnValidPlayerStatsMap() throws FileNotFoundException, IOException {
+	public void returnValidHomePlayerStatsMap() throws FileNotFoundException, IOException {
 		
 
 		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
@@ -45,11 +45,23 @@ public class XlsParserTest {
 		POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream("2017ICLeagueChampionship.xls"));
 		HSSFWorkbook wb = new HSSFWorkbook(fs);
 		//see the test data, rows 3-12 is where the players are
-		Map<Player,Integer> map = parser.parseHomePlayerScores(wb.getSheet("Week 1"), 3, 12);
-		assertEquals(10,map.size());
+		Map<Player,Double> map = parser.parseHomePlayerScores(XlsParser.TEAM.HOME,wb.getSheet("Week 1"), 2, 13);
+		assertEquals(9,map.size());
 		
 	}
 	
 	
+	@Test
+	public void returnValidAwayPlayerStatsMap() throws FileNotFoundException, IOException {
+		
 
+		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
+		parser.init();
+		POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream("2017ICLeagueChampionship.xls"));
+		HSSFWorkbook wb = new HSSFWorkbook(fs);
+		//see the test data, rows 3-12 is where the players are
+		Map<Player,Double> map = parser.parseHomePlayerScores(XlsParser.TEAM.AWAY,wb.getSheet("Week 1"), 2, 13);
+		assertEquals(9,map.size());
+		
+	}
 }
