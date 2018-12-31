@@ -45,7 +45,7 @@ public class XlsParserTest {
 		POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream("2017ICLeagueChampionship.xls"));
 		HSSFWorkbook wb = new HSSFWorkbook(fs);
 		//see the test data, rows 3-12 is where the players are
-		Map<Player,Double> map = parser.parseHomePlayerScores(XlsParser.TEAM.HOME,wb.getSheet("Week 1"), 2, 13);
+		Map<Player,Double> map = parser.parsePlayerScores(XlsParser.TEAM.HOME,wb.getSheet("Week 1"), 2, 13);
 		assertEquals(9,map.size());
 		
 	}
@@ -59,7 +59,7 @@ public class XlsParserTest {
 		POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream("2017ICLeagueChampionship.xls"));
 		HSSFWorkbook wb = new HSSFWorkbook(fs);
 		//see the test data, rows 3-12 is where the players are
-		Map<Player,Double> map = parser.parseHomePlayerScores(XlsParser.TEAM.AWAY,wb.getSheet("Week 1"), 2, 13);
+		Map<Player,Double> map = parser.parsePlayerScores(XlsParser.TEAM.AWAY,wb.getSheet("Week 1"), 2, 13);
 		assertEquals(9,map.size());
 		
 	}

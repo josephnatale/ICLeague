@@ -1,20 +1,18 @@
 package model;
 
-import java.util.List;
-
 public class Team {
 	
-	private List<Player> ArrayList;
+	private Player[] players;
 	private String teamName;
-	public Team(List<Player> arrayList, String teamName) {
-		ArrayList = arrayList;
+	public Team(Player[] players, String teamName) {
+		this.players = players;
 		this.teamName = teamName;
 	}
-	public List<Player> getArrayList() {
-		return ArrayList;
+	public Player[] getPlayers() {
+		return players;
 	}
-	public void setArrayList(List<Player> arrayList) {
-		ArrayList = arrayList;
+	public void setPlayers(Player[] players) {
+		this.players = players;
 	}
 	public String getTeamName() {
 		return teamName;

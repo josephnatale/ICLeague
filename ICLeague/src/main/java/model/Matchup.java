@@ -8,8 +8,8 @@ public class Matchup {
 		super();
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
-		this.scoringStats = scoringStats;
-		this.foulStats = foulStats;
+		this.homeTeamStats = scoringStats;
+		this.awayTeamStats = foulStats;
 	}
 	public Team getHomeTeam() {
 		return homeTeam;
@@ -24,20 +24,20 @@ public class Matchup {
 		this.awayTeam = awayTeam;
 	}
 	public Map<Player, Double> getScoringStats() {
-		return scoringStats;
+		return homeTeamStats;
 	}
 	public void setScoringStats(Map<Player, Double> scoringStats) {
-		this.scoringStats = scoringStats;
+		this.homeTeamStats = scoringStats;
 	}
 	public Map<Player, Double> getFoulStats() {
-		return foulStats;
+		return awayTeamStats;
 	}
 	public void setFoulStats(Map<Player, Double> foulStats) {
-		this.foulStats = foulStats;
+		this.awayTeamStats = foulStats;
 	}
 	private Team homeTeam;
 	private Team awayTeam;
-	private Map<Player,Double> scoringStats;
-	private Map<Player, Double> foulStats;
+	private Map<Player,Double> homeTeamStats;
+	private Map<Player, Double> awayTeamStats;
 
 }

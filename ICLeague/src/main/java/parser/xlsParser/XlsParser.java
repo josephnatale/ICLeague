@@ -17,6 +17,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import model.Matchup;
 import model.Player;
+import model.Team;
 import parser.Parser;
 
 /**
@@ -89,7 +90,7 @@ public class XlsParser implements Parser{
 	 * @param startRow
 	 * @param endRow
 	 */
-	protected Map<Player,Double> parseHomePlayerScores(XlsParser.TEAM team,HSSFSheet sheet, int startRow, int endRow) {
+	protected Map<Player,Double> parsePlayerScores(XlsParser.TEAM team,HSSFSheet sheet, int startRow, int endRow) {
 		
 		int playerIndex;
 		int scoreIndex;
@@ -128,31 +129,42 @@ public class XlsParser implements Parser{
 	
 	/**
 	 * parses the matchup creating teams, players and points and returns a matchup object
-	 * @param matchup
+	 * @param matchupRow - row in xls where matchup starts
 	 * @param sheet
 	 * @return
 	 */
-	public Matchup parseMatchup(int matchup, HSSFSheet sheet) {
+	protected Matchup parseSingleMatchup(int matchupRow, HSSFSheet sheet) {
 		
-//		String homeTeam;
-//		String awayTeam;
-//		double homeScore;
-//		double awayScore;
-		
-		HSSFRow teamsRow = sheet.getRow(matchup);
+		HSSFRow teamsRow = sheet.getRow(matchupRow);
 		HSSFCell homeTeamCell = teamsRow.getCell(HOME_TEAM_NAME_CELL_NUMBER);
 		String homeTeamName = homeTeamCell.getStringCellValue();
+		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,GAME_1_ROW_NUMBER,GAME_2_ROW_NUMBER - 1 );
+		Player[] homePlayers = (Player[]) homeTeamStatsMap.keySet().toArray();
+		Team homeTeam = new Team(homePlayers,homeTeamName);
 		
 		HSSFCell awayTeamCell = teamsRow.getCell(AWAY_TEAM_NAME_CELL_NUMBER);
 		String awayTeamName = awayTeamCell.getStringCellValue();
+		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,GAME_1_ROW_NUMBER,GAME_2_ROW_NUMBER - 1 );
+		Player[] awayPlayers = (Player[]) awayTeamStatsMap.keySet().toArray();
+		Team awayTeam = new Team(awayPlayers,awayTeamName);
 		
-		
-		
-		
-		return null;
+		return new Matchup(homeTeam, awayTeam, homeTeamStatsMap, awayTeamStatsMap);
+	
 	}
 	
-	
+	/**
+	 * goes through given sheet and parses all matchups contained within the sheet into 'model' objects
+	 * @param sheet
+	 * @return
+	 */
+	protected Matchup[] parseWeeklyMatchups(HSSFSheet sheet) {
+		//TODO: need to handle start/end of matchups more gracefully (may require refactoring parseSingleMatchup() method
+		for(Integer i: gamesRows) {
+			
+		}
+		return null;
+		
+	}
 	
 	
 
