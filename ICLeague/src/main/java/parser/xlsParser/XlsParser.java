@@ -17,7 +17,6 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import model.Matchup;
 import model.Player;
-import model.WeekMatchups;
 import parser.Parser;
 
 /**
@@ -40,6 +39,9 @@ public class XlsParser implements Parser{
 	private static int HOME_POINTS_SCORED_CELL_NUMBER = 1;
 	private static int AWAY_PLAYER_NAME_CELL_NUMBER = 4;
 	private static int AWAY_POINTS_SCORED_CELL_NUMBER = 5;
+	
+	private static int HOME_TEAM_NAME_CELL_NUMBER = 0;
+	private static int AWAY_TEAM_NAME_CELL_NUMBER = 4;
 	
 	enum TEAM{
 		HOME,
@@ -76,7 +78,7 @@ public class XlsParser implements Parser{
 	 * the 'model' package
 	 */
 	@Override
-	public WeekMatchups getMatchups() {
+	public Matchup[] getMatchups() {
 		
 		return null;
 	}
@@ -122,6 +124,32 @@ public class XlsParser implements Parser{
 		}
 		
 		return scoreMap;
+	}
+	
+	/**
+	 * parses the matchup creating teams, players and points and returns a matchup object
+	 * @param matchup
+	 * @param sheet
+	 * @return
+	 */
+	public Matchup parseMatchup(int matchup, HSSFSheet sheet) {
+		
+//		String homeTeam;
+//		String awayTeam;
+//		double homeScore;
+//		double awayScore;
+		
+		HSSFRow teamsRow = sheet.getRow(matchup);
+		HSSFCell homeTeamCell = teamsRow.getCell(HOME_TEAM_NAME_CELL_NUMBER);
+		String homeTeamName = homeTeamCell.getStringCellValue();
+		
+		HSSFCell awayTeamCell = teamsRow.getCell(AWAY_TEAM_NAME_CELL_NUMBER);
+		String awayTeamName = awayTeamCell.getStringCellValue();
+		
+		
+		
+		
+		return null;
 	}
 	
 	

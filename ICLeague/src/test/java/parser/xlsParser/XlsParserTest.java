@@ -53,7 +53,6 @@ public class XlsParserTest {
 	
 	@Test
 	public void returnValidAwayPlayerStatsMap() throws FileNotFoundException, IOException {
-		
 
 		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
 		parser.init();
