@@ -133,18 +133,24 @@ public class XlsParser implements Parser{
 	 * @param sheet
 	 * @return
 	 */
-	protected Matchup parseSingleMatchup(int matchupRow, HSSFSheet sheet) {
+	protected Matchup parseSingleMatchup(int matchupRowStart, int matchupRowEnd, HSSFSheet sheet) {
 		
-		HSSFRow teamsRow = sheet.getRow(matchupRow);
+		if(sheet == null) {
+			throw new IllegalArgumentException("sheet is null");
+		}
+		
+		HSSFRow teamsRow = sheet.getRow(matchupRowStart);
 		HSSFCell homeTeamCell = teamsRow.getCell(HOME_TEAM_NAME_CELL_NUMBER);
 		String homeTeamName = homeTeamCell.getStringCellValue();
-		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,GAME_1_ROW_NUMBER,GAME_2_ROW_NUMBER - 1 );
+		//since we are passing in the next matchup start as the 'matchupRowEnd' variable, so we need to end with the row prior to that
+		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart,matchupRowEnd-1 );
 		Player[] homePlayers = (Player[]) homeTeamStatsMap.keySet().toArray();
 		Team homeTeam = new Team(homePlayers,homeTeamName);
 		
 		HSSFCell awayTeamCell = teamsRow.getCell(AWAY_TEAM_NAME_CELL_NUMBER);
 		String awayTeamName = awayTeamCell.getStringCellValue();
-		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,GAME_1_ROW_NUMBER,GAME_2_ROW_NUMBER - 1 );
+		//same as above
+		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart, matchupRowEnd-1 );
 		Player[] awayPlayers = (Player[]) awayTeamStatsMap.keySet().toArray();
 		Team awayTeam = new Team(awayPlayers,awayTeamName);
 		
@@ -159,6 +165,7 @@ public class XlsParser implements Parser{
 	 */
 	protected Matchup[] parseWeeklyMatchups(HSSFSheet sheet) {
 		//TODO: need to handle start/end of matchups more gracefully (may require refactoring parseSingleMatchup() method
+		ArrayList<Matchup> matchups = new ArrayList<Matchup>();
 		for(Integer i: gamesRows) {
 			
 		}
