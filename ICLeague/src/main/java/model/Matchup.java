@@ -2,11 +2,7 @@ package model;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import event.gson.PlayerAdapter;
 
 public class Matchup implements Splunkable{
 	
@@ -48,7 +44,8 @@ public class Matchup implements Splunkable{
 	@Override
 	public String toJsonEvent() {
 		/*
-		 * TODO: abstract the Gson library out with an interface
+		 * TODO: abstract the Gson library out with an interface, thoguht I needed this when creating custom
+		 * serializers...not sure there's value anymore.
 		 */
 		Gson gson = new Gson();
 		String jsonEvent = gson.toJson(this);
