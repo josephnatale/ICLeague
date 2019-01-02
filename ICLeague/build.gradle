@@ -18,10 +18,19 @@ bootJar {
     version =  '0.1.0'
 }
 
+sourceSets {
+    test {
+        java {
+            srcDirs = ["src/test"] 
+        }
+    }
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework:spring-web")
     compile("com.fasterxml.jackson.core:jackson-databind")
+    implementation 'com.google.code.gson:gson:2.8.5'
     testCompile("junit:junit")
 }
 // In this section you declare where to find the dependencies of your project

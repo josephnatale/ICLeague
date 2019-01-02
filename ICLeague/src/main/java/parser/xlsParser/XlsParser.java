@@ -79,7 +79,7 @@ public class XlsParser implements Parser{
 	 */
 	@Override
 	public Matchup[] getMatchups() {
-		
+		//TODO: figure out how to impelemtn what we expose to the outside
 		return null;
 	}
 	
@@ -89,7 +89,7 @@ public class XlsParser implements Parser{
 	 * @param startRow
 	 * @param endRow
 	 */
-	protected Map<Player,Double> parsePlayerScores(XlsParser.TEAM team,HSSFSheet sheet, int startRow, int endRow) {
+	protected Map<String,Double> parsePlayerScores(XlsParser.TEAM team,HSSFSheet sheet, int startRow, int endRow) {
 		
 		int playerIndex;
 		int scoreIndex;
@@ -103,7 +103,7 @@ public class XlsParser implements Parser{
 			throw new IllegalArgumentException("valid TEAM not supplied");
 		}
 		
-		Map<Player,Double> scoreMap = new HashMap<Player, Double>();
+		Map<String,Double> scoreMap = new HashMap<String, Double>();
 		for(int i = startRow; i <= endRow; i++) {
 			HSSFRow playerRow = sheet.getRow(i);
 			HSSFCell playerCell = playerRow.getCell(playerIndex);
@@ -121,10 +121,10 @@ public class XlsParser implements Parser{
 			int cellType = scoreCell.getCellType();
 			if(cellType == HSSFCell.CELL_TYPE_NUMERIC) {
 				double playerScoreDouble = scoreCell.getNumericCellValue();
-				scoreMap.put(new Player(playerName), new Double(playerScoreDouble));
+				scoreMap.put(playerName, new Double(playerScoreDouble));
 			}else if(cellType == HSSFCell.CELL_TYPE_STRING) {
 				//john uses an 'x' to represent when a player didn't play, i'll use a -1
-				scoreMap.put(new Player(playerName), new Double(-1));
+				scoreMap.put(playerName, new Double(-1));
 			}
 			
 		}
@@ -150,13 +150,13 @@ public class XlsParser implements Parser{
 		/*
 		 * here we need to add 1 to the start and subtract 1 from the end so get the rows where the players are
 		 */
-		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart+1,matchupRowEnd-1 );
+		Map<String,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart+1,matchupRowEnd-1 );
 		
 		
 		Player[] homePlayers = new Player[homeTeamStatsMap.keySet().toArray().length];
 		int i = 0;
-		for(Player p: homeTeamStatsMap.keySet()) {
-			homePlayers[i] = p;
+		for(String p: homeTeamStatsMap.keySet()) {
+			homePlayers[i] = new Player(p);
 			i++;
 		}
 		Team homeTeam = new Team(homePlayers,homeTeamName);
@@ -164,11 +164,11 @@ public class XlsParser implements Parser{
 		HSSFCell awayTeamCell = teamsRow.getCell(AWAY_TEAM_NAME_CELL_NUMBER);
 		String awayTeamName = awayTeamCell.getStringCellValue();
 		//same as above
-		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.AWAY,sheet,matchupRowStart+1, matchupRowEnd-1 );
+		Map<String,Double> awayTeamStatsMap = parsePlayerScores(TEAM.AWAY,sheet,matchupRowStart+1, matchupRowEnd-1 );
 		Player[] awayPlayers = new Player[awayTeamStatsMap.keySet().toArray().length];
 		int j = 0;
-		for(Player p: homeTeamStatsMap.keySet()) {
-			homePlayers[j] = p;
+		for(String p: homeTeamStatsMap.keySet()) {
+			homePlayers[j] = new Player(p);
 			j++;
 		}
 		Team awayTeam = new Team(awayPlayers,awayTeamName);

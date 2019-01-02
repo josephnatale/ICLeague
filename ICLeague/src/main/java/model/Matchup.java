@@ -2,13 +2,19 @@ package model;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import event.gson.PlayerAdapter;
+
 public class Matchup implements Splunkable{
 	
-	public Matchup(Team homeTeam, Team awayTeam, Map<Player, Double> scoringStats, Map<Player, Double> foulStats) {
+	public Matchup(Team homeTeam, Team awayTeam, Map<String, Double> homeStats, Map<String, Double> awayStats) {
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
-		this.homeTeamStats = scoringStats;
-		this.awayTeamStats = foulStats;
+		this.homeTeamStats = homeStats;
+		this.awayTeamStats = awayStats;
 	}
 	public Team getHomeTeam() {
 		return homeTeam;
@@ -22,26 +28,31 @@ public class Matchup implements Splunkable{
 	public void setAwayTeam(Team awayTeam) {
 		this.awayTeam = awayTeam;
 	}
-	public Map<Player, Double> getScoringStats() {
+	public Map<String, Double> getScoringStats() {
 		return homeTeamStats;
 	}
-	public void setScoringStats(Map<Player, Double> scoringStats) {
+	public void setScoringStats(Map<String, Double> scoringStats) {
 		this.homeTeamStats = scoringStats;
 	}
-	public Map<Player, Double> getAwayTeamStats() {
+	public Map<String, Double> getAwayTeamStats() {
 		return awayTeamStats;
 	}
-	public void setAwayTeamStats(Map<Player, Double> foulStats) {
+	public void setAwayTeamStats(Map<String, Double> foulStats) {
 		this.awayTeamStats = foulStats;
 	}
 	private Team homeTeam;
 	private Team awayTeam;
-	private Map<Player,Double> homeTeamStats;
-	private Map<Player, Double> awayTeamStats;
+	private Map<String,Double> homeTeamStats;
+	private Map<String, Double> awayTeamStats;
+	
 	@Override
 	public String toJsonEvent() {
-		// TODO Auto-generated method stub
-		return null;
+		/*
+		 * TODO: abstract the Gson library out with an interface
+		 */
+		Gson gson = new Gson();
+		String jsonEvent = gson.toJson(this);
+		return jsonEvent;
 	}
 
 }
