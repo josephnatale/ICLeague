@@ -1,6 +1,6 @@
 package model;
 
-public class Team {
+public class Team{
 	
 	private Player[] players;
 	private String teamName;
@@ -20,6 +20,7 @@ public class Team {
 	public void setTeamName(String teamName) {
 		this.teamName = teamName;
 	}
+
 	
 
 }

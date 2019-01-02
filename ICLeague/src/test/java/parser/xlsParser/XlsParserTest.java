@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -141,6 +142,21 @@ public class XlsParserTest {
 		assertEquals(9,matchup.getAwayTeam().getPlayers().length);
 		
 		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testParseWeeklyMatchupsSheetNamesIsNull() throws FileNotFoundException, IOException {
+		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
+		parser.init();
+		List<Matchup> matchups = parser.parseWeeklyMatchups(null);
+	}
+	
+	@Test
+	public void testParseWeeklyMatchupsParseSingleWeek() throws FileNotFoundException, IOException {
+		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
+		parser.init();
+		List<Matchup> matchups = parser.parseWeeklyMatchups("Week 1");
+		assertEquals(5,matchups.size());
 	}
 	
 	

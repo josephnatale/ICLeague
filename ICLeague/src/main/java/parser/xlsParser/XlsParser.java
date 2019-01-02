@@ -50,8 +50,6 @@ public class XlsParser implements Parser{
 		AWAY
 	}
 	
-	private Integer[] gamesRows = { GAME_1_ROW_NUMBER, GAME_2_ROW_NUMBER, GAME_3_ROW_NUMBER, GAME_4_ROW_NUMBER, GAME_5_ROW_NUMBER };
-	
 	private String fileName;
 	POIFSFileSystem fs;
 	HSSFWorkbook wb;
@@ -184,13 +182,29 @@ public class XlsParser implements Parser{
 	 * @param sheet
 	 * @return
 	 */
-	protected Matchup[] parseWeeklyMatchups(HSSFSheet sheet) {
-		//TODO: need to handle start/end of matchups more gracefully (may require refactoring parseSingleMatchup() method
-		ArrayList<Matchup> matchups = new ArrayList<Matchup>();
-		for(Integer i: gamesRows) {
-			
+	protected List<Matchup> parseWeeklyMatchups(String sheetName) {
+		
+		if(sheetName == null || sheetName.length() == 0) {
+			throw new IllegalArgumentException("sheetnames is null");
 		}
-		return null;
+	
+		/*
+		 * this can be more elegant...
+		 */
+		ArrayList<Matchup> matchups = new ArrayList<Matchup>();
+		Matchup matchup1 = parseSingleMatchup(GAME_1_ROW_NUMBER, GAME_2_ROW_NUMBER, wb.getSheet(sheetName));
+		Matchup matchup2 = parseSingleMatchup(GAME_2_ROW_NUMBER, GAME_3_ROW_NUMBER, wb.getSheet(sheetName));
+		Matchup matchup3 = parseSingleMatchup(GAME_3_ROW_NUMBER, GAME_4_ROW_NUMBER, wb.getSheet(sheetName));
+		Matchup matchup4 = parseSingleMatchup(GAME_4_ROW_NUMBER, GAME_5_ROW_NUMBER, wb.getSheet(sheetName));
+		Matchup matchup5 = parseSingleMatchup(GAME_5_ROW_NUMBER, wb.getSheet(sheetName).getLastRowNum(), wb.getSheet(sheetName));
+	
+		matchups.add(matchup1);
+		matchups.add(matchup2);
+		matchups.add(matchup3);
+		matchups.add(matchup4);
+		matchups.add(matchup5);
+		
+		return matchups;
 		
 	}
 	
