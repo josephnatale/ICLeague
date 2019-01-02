@@ -5,7 +5,6 @@ import java.util.Map;
 public class Matchup {
 	
 	public Matchup(Team homeTeam, Team awayTeam, Map<Player, Double> scoringStats, Map<Player, Double> foulStats) {
-		super();
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
 		this.homeTeamStats = scoringStats;

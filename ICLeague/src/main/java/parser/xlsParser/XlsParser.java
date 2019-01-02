@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,12 +105,18 @@ public class XlsParser implements Parser{
 			throw new IllegalArgumentException("valid TEAM not supplied");
 		}
 		
-		Map<Player,Double> scoreMap= new HashMap<Player, Double>();
+		Map<Player,Double> scoreMap = new HashMap<Player, Double>();
 		for(int i = startRow; i <= endRow; i++) {
 			HSSFRow playerRow = sheet.getRow(i);
 			HSSFCell playerCell = playerRow.getCell(playerIndex);
+			/*
+			 * continue of the playercell or the player name is not found
+			 */
+			if(playerCell == null) {
+				continue;
+			}
 			String playerName = playerCell.getStringCellValue();
-			if(playerName == null) {
+			if(playerName == null || playerName.length() == 0) {
 				continue;
 			}
 			HSSFCell scoreCell = playerRow.getCell(scoreIndex);
@@ -142,16 +149,30 @@ public class XlsParser implements Parser{
 		HSSFRow teamsRow = sheet.getRow(matchupRowStart);
 		HSSFCell homeTeamCell = teamsRow.getCell(HOME_TEAM_NAME_CELL_NUMBER);
 		String homeTeamName = homeTeamCell.getStringCellValue();
-		//since we are passing in the next matchup start as the 'matchupRowEnd' variable, so we need to end with the row prior to that
-		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart,matchupRowEnd-1 );
-		Player[] homePlayers = (Player[]) homeTeamStatsMap.keySet().toArray();
+		/*
+		 * here we need to add 1 to the start and subtract 1 from the end so get the rows where the players are
+		 */
+		Map<Player,Double> homeTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart+1,matchupRowEnd-1 );
+		
+		
+		Player[] homePlayers = new Player[homeTeamStatsMap.keySet().toArray().length];
+		int i = 0;
+		for(Player p: homeTeamStatsMap.keySet()) {
+			homePlayers[i] = p;
+			i++;
+		}
 		Team homeTeam = new Team(homePlayers,homeTeamName);
 		
 		HSSFCell awayTeamCell = teamsRow.getCell(AWAY_TEAM_NAME_CELL_NUMBER);
 		String awayTeamName = awayTeamCell.getStringCellValue();
 		//same as above
-		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.HOME,sheet,matchupRowStart, matchupRowEnd-1 );
-		Player[] awayPlayers = (Player[]) awayTeamStatsMap.keySet().toArray();
+		Map<Player,Double> awayTeamStatsMap = parsePlayerScores(TEAM.AWAY,sheet,matchupRowStart+1, matchupRowEnd-1 );
+		Player[] awayPlayers = new Player[awayTeamStatsMap.keySet().toArray().length];
+		int j = 0;
+		for(Player p: homeTeamStatsMap.keySet()) {
+			homePlayers[j] = p;
+			j++;
+		}
 		Team awayTeam = new Team(awayPlayers,awayTeamName);
 		
 		return new Matchup(homeTeam, awayTeam, homeTeamStatsMap, awayTeamStatsMap);
