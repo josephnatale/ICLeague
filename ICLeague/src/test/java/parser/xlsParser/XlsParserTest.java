@@ -148,14 +148,14 @@ public class XlsParserTest {
 	public void testParseWeeklyMatchupsSheetNamesIsNull() throws FileNotFoundException, IOException {
 		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
 		parser.init();
-		List<Matchup> matchups = parser.getWeeklyMatchups(null);
+		List<Matchup> matchups = parser.parseWeeklyMatchups(null);
 	}
 	
 	@Test
 	public void testParseWeeklyMatchupsParseSingleWeek() throws FileNotFoundException, IOException {
 		XlsParser parser = new XlsParser("2017ICLeagueChampionship.xls");
 		parser.init();
-		List<Matchup> matchups = parser.getWeeklyMatchups("Week 1");
+		List<Matchup> matchups = parser.parseWeeklyMatchups("Week 1");
 		assertEquals(5,matchups.size());
 	}
 	
