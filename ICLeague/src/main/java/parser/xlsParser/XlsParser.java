@@ -78,9 +78,9 @@ public class XlsParser implements Parser{
 	 * the 'model' package
 	 */
 	@Override
-	public Matchup[] getMatchups() {
-		//TODO: figure out how to impelemtn what we expose to the outside
-		return null;
+	public List<Matchup> getMatchups() {
+		
+		return parseWeeklyMatchups("Week 1");
 	}
 	
 	/**

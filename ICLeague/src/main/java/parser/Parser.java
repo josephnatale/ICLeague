@@ -2,6 +2,7 @@ package parser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import model.Matchup;
 /**
@@ -18,7 +19,7 @@ public interface Parser {
 	 * the data will change making this obsolete at some point
 	 * @return
 	 */
-	public Matchup[] getMatchups();
+	public List<Matchup> getMatchups();
 	
 	/**
 	 * initializes the parser
